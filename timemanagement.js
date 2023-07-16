@@ -1,22 +1,21 @@
-function calculateRemainingHours() {
-  const startWorkingTime = new Date();
-  startWorkingTime.setHours(9, 30, 0, 0);
+const moment = require('moment');
+const momentT = require('moment-timezone');
 
-  const totalWorkingHours = 9.5; // Total working hours per day
+let workingTime = 8
+let workingHours = 20
 
-  const now = new Date();
-  const elapsedTime = (now - startWorkingTime) / (1000 * 60 * 60); // Elapsed time in hours
+let workedTime = 00
+let workedHours = 00
 
-  if (elapsedTime >= totalWorkingHours) {
-    console.log("The workday has ended.");
-  } else {
-    const remainingHours = totalWorkingHours - elapsedTime;
-
-    const endWorkingTime = new Date(now.getTime() + remainingHours * 60 * 60 * 1000);
-
-    console.log(`Remaining working hours: ${remainingHours.toFixed(2)}`);
-    console.log(`End time of workday: ${endWorkingTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
-  }
+if(workingTime == workedTime && workingHours == workedHours){
+    console.log(`Time is Over`);
+} else {
+  const currentTime = momentT().tz('Asia/Kolkata');
+  const totalWorkingHours = moment.duration(8, 'hours').add((20, 'minutes'));
+  const totalWorkedHours = moment.duration(workedTime, 'hours').add((workedHours, 'minutes'));
+  const remainTime = moment.utc(totalWorkingHours.asMilliseconds() - totalWorkedHours.asMilliseconds());
+console.log(`RemainTime:${remainTime.format('HH:mm:ss')}`);
+  const finalTime = currentTime.add(remainTime); 
+  const formattedFinalTime = finalTime.format('HH:mm:ss');
+  console.log(`Time Ends in: ${formattedFinalTime}`);
 }
-
-calculateRemainingHours();
